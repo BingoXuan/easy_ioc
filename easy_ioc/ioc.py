@@ -23,12 +23,13 @@ class ContainerMeta(type):
 class Container(object):
     __metaclass__ = ContainerMeta
     _dependencies = Dependencies()
+    _injected = Dependencies()
 
     def __init__(self, **kwargs):
         pass
 
     @classmethod
-    def get_dependencies(cls, url=None, ctx=None):
+    def walk_dependencies(cls, url=None, ctx=None):
         if ctx is None:
             ctx = {
                 'container': {},
@@ -36,22 +37,28 @@ class Container(object):
             }
         if url is None:
             url = cls.__name__
-            # url = cls.__name__
         spec = inspect.getargspec(cls.__init__)
         ctx['container'][url] = {k: None for k in spec.args[1:]}
         for k, v in cls._dependencies.items():
             assert isinstance(v, Injectable)
             if issubclass(v.cls, Container):
-                v.cls.get_dependencies(url + '.' + k, ctx)
+                v.cls.walk_dependencies(url + '.' + k, ctx)
             else:
                 ctx['container_dependencies'][url + '.' + k] = None
         return ctx
+
+    def inject_dependency(self, name, value):
+        self._injected[name] = value
+
+    def get_dependency(self, name):
+        return self._injected.get(name)
 
     @classmethod
     def inject(cls, dependencies, url=None):
         if url is None:
             url = cls.__name__
         obj = object.__new__(cls)
+        setattr(obj, '_injected', Dependencies())
         for k, v in cls._dependencies.items():
             sub_url = url + '.' + k
             assert isinstance(v, Injectable)
@@ -59,7 +66,7 @@ class Container(object):
                 dep = v.cls.inject(dependencies, sub_url)
             else:
                 dep = dependencies['container_dependencies'].get(sub_url)
-            setattr(obj, k, dep)
+            obj.inject_dependency(k, dep)
         kw = dependencies['container'].get(url) or {}
         obj.__init__(**kw)
         assert isinstance(obj, cls)
@@ -67,7 +74,7 @@ class Container(object):
 
     @classmethod
     def generate(cls, file):
-        deps = cls.get_dependencies()
+        deps = cls.walk_dependencies()
         file.write(u'dependencies = ' + \
                    json.dumps(deps, indent=2).replace(u'null', u'None'))
 
