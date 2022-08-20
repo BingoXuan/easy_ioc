@@ -1,5 +1,6 @@
 import json
 import inspect
+import six
 from easy_ioc.injectable import *
 
 
@@ -14,11 +15,13 @@ class ContainerMeta(type):
         for k, v in namespaces.items():
             if isinstance(v, Injectable):
                 dependencies[k] = v
+            if getattr(v, '__set_name__', None) is not None:
+                v.__set_name__(cls, k)
         cls._dependencies = dependencies
         return cls
 
 
-class Container(metaclass=ContainerMeta):
+class Container(six.with_metaclass(ContainerMeta, object)):
     _dependencies = Dependencies()
 
     def __init__(self, **kwargs):
@@ -33,7 +36,8 @@ class Container(metaclass=ContainerMeta):
             }
         if url is None:
             url = cls.__name__
-        spec = inspect.getfullargspec(cls.__init__)
+            # url = cls.__name__
+        spec = inspect.getargspec(cls.__init__)
         ctx['container'][url] = {k: None for k in spec.args[1:]}
         for k, v in cls._dependencies.items():
             assert isinstance(v, Injectable)
@@ -64,8 +68,8 @@ class Container(metaclass=ContainerMeta):
     @classmethod
     def generate(cls, file):
         deps = cls.get_dependencies()
-        file.write('dependencies = ' + \
-                   json.dumps(deps, indent=2).replace('null', 'None'))
+        file.write(u'dependencies = ' + \
+                   json.dumps(deps, indent=2).replace(u'null', u'None'))
 
 
 __all__ = ['Injectable', 'Container', 'DependencyError']
