@@ -14,5 +14,8 @@ setup(name='easy_ioc',
           "Programming Language :: Python :: 2.7",
           "License :: OSI Approved :: MIT License",
       ],
+      options={
+            'bdist_wheel':{'python_tag':'py2'}
+      },
       python_requires='==2.7',
       )

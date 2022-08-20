@@ -1,6 +1,5 @@
 import json
 import inspect
-import six
 from easy_ioc.injectable import *
 
 
@@ -21,7 +20,8 @@ class ContainerMeta(type):
         return cls
 
 
-class Container(six.with_metaclass(ContainerMeta, object)):
+class Container(object):
+    __metaclass__ = ContainerMeta
     _dependencies = Dependencies()
 
     def __init__(self, **kwargs):
