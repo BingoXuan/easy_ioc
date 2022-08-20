@@ -128,4 +128,13 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# project ignore
 .idea
+venv
+.coveragerc*
+htmlcov*
+dist
+.pytest_cache
+build
+easy_ioc.egg-info
+.pyirc
