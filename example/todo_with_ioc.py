@@ -30,6 +30,7 @@ class TodoModuleContainer(TodoModule, Container):
 
 class TodoServiceContainer(TodoService, Container):
     todo_module = inject(TodoModuleContainer)  # type: TodoModuleContainer
+    vip_login_module = inject(LoginModuleContainer)  # type: LoginModuleContainer
     login_module = inject(LoginModuleContainer)  # type: LoginModuleContainer
 
     def __init__(self, host, port):

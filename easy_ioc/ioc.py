@@ -5,6 +5,8 @@ from easy_ioc.injectable import *
 
 class ContainerMeta(type):
     def __new__(mcls, name, bases, namespaces):
+        dependencies = Dependencies()
+        # namespaces['_dependencies'] = dependencies
         cls = super(ContainerMeta, mcls).__new__(mcls, name, bases, namespaces)
         dependencies = Dependencies()
         for base in bases:
@@ -20,12 +22,19 @@ class ContainerMeta(type):
 
 class Container(metaclass=ContainerMeta):
     _dependencies = Dependencies()
+    _injected = Dependencies()
 
     def __init__(self, **kwargs):
         pass
 
+    def inject_dependency(self, name, value):
+        self._injected[name] = value
+
+    def get_dependency(self, name):
+        return self._injected.get(name)
+
     @classmethod
-    def get_dependencies(cls, url=None, ctx=None):
+    def walk_dependencies(cls, url=None, ctx=None):
         if ctx is None:
             ctx = {
                 'container': {},
@@ -38,7 +47,7 @@ class Container(metaclass=ContainerMeta):
         for k, v in cls._dependencies.items():
             assert isinstance(v, Injectable)
             if issubclass(v.cls, Container):
-                v.cls.get_dependencies(url + '.' + k, ctx)
+                v.cls.walk_dependencies(url + '.' + k, ctx)
             else:
                 ctx['container_dependencies'][url + '.' + k] = None
         return ctx
@@ -48,6 +57,7 @@ class Container(metaclass=ContainerMeta):
         if url is None:
             url = cls.__name__
         obj = object.__new__(cls)
+        setattr(obj,'_injected',Dependencies())
         for k, v in cls._dependencies.items():
             sub_url = url + '.' + k
             assert isinstance(v, Injectable)
@@ -55,7 +65,7 @@ class Container(metaclass=ContainerMeta):
                 dep = v.cls.inject(dependencies, sub_url)
             else:
                 dep = dependencies['container_dependencies'].get(sub_url)
-            setattr(obj, k, dep)
+            obj.inject_dependency(k,dep)
         kw = dependencies['container'].get(url) or {}
         obj.__init__(**kw)
         assert isinstance(obj, cls)
@@ -63,7 +73,7 @@ class Container(metaclass=ContainerMeta):
 
     @classmethod
     def generate(cls, file):
-        deps = cls.get_dependencies()
+        deps = cls.walk_dependencies()
         file.write('dependencies = ' + \
                    json.dumps(deps, indent=2).replace('null', 'None'))
 

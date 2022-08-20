@@ -7,7 +7,5 @@ pip install easy_ioc
 `
 
 ## How to use
-1. 
-`
-
+`python
 `
