@@ -17,5 +17,5 @@ setup(name='easy_ioc',
       options={
             'bdist_wheel':{'python_tag':'py2'}
       },
-      python_requires='==2.7',
+      python_requires='>2,<=2.7.12',
       )
