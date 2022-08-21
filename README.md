@@ -5,7 +5,7 @@ a simple dependency-injection python library, which implemented with pure python
 ## &#x20;Install
 
 ```bash
-pip install easy_ioc
+pip install easy-ioc
 ```
 
 ## &#x20;Example
