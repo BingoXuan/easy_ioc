@@ -58,14 +58,18 @@ def new_todo_service():
     #             "port": None
     #         },
     #         "TodoServiceContainer.todo_module": {},
+    #         "TodoServiceContainer.vip_login_module": {},
     #         "TodoServiceContainer.login_module": {}
     #     },
     #     "container_dependencies": {
     #         "TodoServiceContainer.todo_module.todo_db": None,
+    #         "TodoServiceContainer.vip_login_module.user_db": None,
+    #         "TodoServiceContainer.vip_login_module.token_library": None,
     #         "TodoServiceContainer.login_module.user_db": None,
     #         "TodoServiceContainer.login_module.token_library": None
     #     }
     # }
+
     # I updated the dependencies as example/dependencies.py
     # let's inject the dependencies
     return TodoServiceContainer.inject(dependencies)
