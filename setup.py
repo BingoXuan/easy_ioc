@@ -11,12 +11,11 @@ setup(name='easy_ioc',
           "Development Status :: 5 - Production/Stable",
           "Topic :: Utilities",
           "Topic :: Software Development :: Libraries",
-          "Programming Language :: Python :: 2",
           "Programming Language :: Python :: 3",
           "License :: OSI Approved :: MIT License",
           "Typing :: Typed",
       ],
-      python_requires='>=2.7,>=3.5',
+      python_requires='>=3.5',
       long_description="""
       a simple dependency-injection python library,\
        which implemented with pure python and meta-programming.\
