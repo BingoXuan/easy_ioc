@@ -16,9 +16,6 @@ setup(name='easy_ioc',
           "License :: OSI Approved :: MIT License",
           "Typing :: Typed",
       ],
-      options={
-          'bdist_wheel': {'python_tag': 'py2'}
-      },
       python_requires='>=2.7,>=3.5',
       long_description="""
       a simple dependency-injection python library,\
