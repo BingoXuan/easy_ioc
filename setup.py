@@ -11,19 +11,21 @@ setup(name='easy_ioc',
           "Development Status :: 5 - Production/Stable",
           "Topic :: Utilities",
           "Topic :: Software Development :: Libraries",
-          "Programming Language :: Python :: 3.9",
-          "Programming Language :: Python :: 3.8",
-          "Programming Language :: Python :: 3.7",
-          "Programming Language :: Python :: 3.6",
-          "Programming Language :: Python :: 3.5",
+          "Programming Language :: Python :: 2",
+          "Programming Language :: Python :: 3",
           "License :: OSI Approved :: MIT License",
           "Typing :: Typed",
       ],
+      options={
+          'bdist_wheel': {'python_tag': 'py2'}
+      },
       python_requires='>=2.7,>=3.5',
       long_description="""
-a simple dependency-injection python library,\
- which implemented with pure python and meta-programming.\
- It is non-invasive and progressive to refactor \
- your code without learning complex concepts.
-"""
+      a simple dependency-injection python library,\
+       which implemented with pure python and meta-programming.\
+       It is non-invasive and progressive to refactor \
+       your code without learning complex concepts.\
+       visit https://github.com/BingoXuan/easy_ioc for \
+       more information
+      """
       )
