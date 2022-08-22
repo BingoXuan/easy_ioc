@@ -10,9 +10,11 @@ pip install easy-ioc
 
 ## FAQ
 ### Why I need dependency-injection?
-See the example below. Basically, you always need to manually pass dependencies of class
+1. See the example below. Basically, you always need to manually pass dependencies of class
 to the constructor of class. And constructor should set instance attribute from parameters.
 It wastes lots of time and coupling instances each other.
+2. lazy-compute defer initialization of instance after dependencies injected. Therefore, constructor
+just focus on initialization.
 
 ### How it works?
 Meta-programming is key of how to make a class. easy-ioc use meta-programming to save the
@@ -29,6 +31,10 @@ the **inject** function create an **Injectable** instance which help you access 
 correctly. Different instance share same dependencies map, but access own dependencies privately.
 If you want to know more, 
 
+### Is it easy to be tested?
+It is not just easy to be tested. It makes testing much easier. Think about use case as below
+1. a mono-repo application, need connecting db or loading config from file.
+2. an async application, an async object dependent on other async object.
 
 ## Example
 
