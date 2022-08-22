@@ -1,6 +1,9 @@
 import json
 import inspect
 from easy_ioc.injectable import *
+import sys
+
+need_patch_set_name = sys.version_info.major == 3 and sys.version_info.minor == 5
 
 
 class ContainerMeta(type):
@@ -16,6 +19,9 @@ class ContainerMeta(type):
         for k, v in namespaces.items():
             if isinstance(v, Injectable):
                 dependencies[k] = v
+            if need_patch_set_name:
+                if getattr(v, '__set_name__', None) is not None:
+                    v.__set_name__(cls, k)
         cls._dependencies = dependencies
         return cls
 
@@ -57,7 +63,7 @@ class Container(metaclass=ContainerMeta):
         if url is None:
             url = cls.__name__
         obj = object.__new__(cls)
-        setattr(obj,'_injected',Dependencies())
+        setattr(obj, '_injected', Dependencies())
         for k, v in cls._dependencies.items():
             sub_url = url + '.' + k
             assert isinstance(v, Injectable)
@@ -65,7 +71,7 @@ class Container(metaclass=ContainerMeta):
                 dep = v.cls.inject(dependencies, sub_url)
             else:
                 dep = dependencies['container_dependencies'].get(sub_url)
-            obj.inject_dependency(k,dep)
+            obj.inject_dependency(k, dep)
         kw = dependencies['container'].get(url) or {}
         obj.__init__(**kw)
         assert isinstance(obj, cls)

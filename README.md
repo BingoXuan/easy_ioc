@@ -2,15 +2,37 @@
 
 a simple dependency-injection python library, which implemented with pure python and meta-programming. It is non-invasive and progressive to refactor your code without learning complex concepts.
 
-## &#x20;Install
+## Install
 
 ```bash
 pip install easy-ioc
 ```
 
-## &#x20;Example
+## FAQ
+### Why I need dependency-injection?
+See the example below. Basically, you always need to manually pass dependencies of class
+to the constructor of class. And constructor should set instance attribute from parameters.
+It wastes lots of time and coupling instances each other.
 
-project without easy\_ioc
+### How it works?
+Meta-programming is key of how to make a class. easy-ioc use meta-programming to save the
+dependencies of class inside. It cost little performance to achieve. When you try to figure
+out the map of your project, easy-ioc can generate the flat tree of dependencies. Then you
+can inject all dependencies you need.
+
+### Can I use in Python 3.5 lower?
+If you're still using 2.7. Pull origin and checkout branch **python2.7**. And for python 
+version greater 3 but lower 3.5, you just need to remove typing in **easy_ioc.inject**.
+
+### Why all dependencies save as class attributes, all instance share same dependencies?
+the **inject** function create an **Injectable** instance which help you access own dependencies
+correctly. Different instance share same dependencies map, but access own dependencies privately.
+If you want to know more, 
+
+
+## Example
+
+### project without easy\_ioc
 
 ```python
 # example/todo_without_ioc.py
@@ -109,7 +131,7 @@ if __name__ == '__main__':
 
 ```
 
-refactor project with easy\_ioc
+### refactor project with easy\_ioc
 
 ```python
 # example/todo_with_ioc.py
