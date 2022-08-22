@@ -120,14 +120,6 @@ import logging
 import io
 
 
-class InjectableSQLite(SQLite):
-    pass
-
-
-class InjectableTokenLibrary(TokenLibrary):
-    pass
-
-
 class LoginModuleContainer(LoginModule, Container):
     user_db = inject(DB) # using DB, the parent class as interface
     token_library = inject(TokenLibrary)

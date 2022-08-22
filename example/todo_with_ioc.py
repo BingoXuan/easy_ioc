@@ -1,20 +1,12 @@
-from example.todo_without_ioc import SQLite, TodoModule, TodoService, LoginModule, TokenLibrary,DB
+from example.todo_without_ioc import SQLite, TodoModule, TodoService, LoginModule, TokenLibrary, DB
 from easy_ioc import Container, inject
 from example.dependencies import dependencies
 import logging
 import io
 
 
-class InjectableSQLite(SQLite):
-    pass
-
-
-class InjectableTokenLibrary(TokenLibrary):
-    pass
-
-
 class LoginModuleContainer(LoginModule, Container):
-    user_db = inject(DB) # using DB, the parent class as interface
+    user_db = inject(DB)  # using DB, the parent class as interface
     token_library = inject(TokenLibrary)
 
     def __init__(self):
@@ -22,7 +14,7 @@ class LoginModuleContainer(LoginModule, Container):
 
 
 class TodoModuleContainer(TodoModule, Container):
-    todo_db = inject(DB) # using DB, the parent class as interface
+    todo_db = inject(DB)  # using DB, the parent class as interface
 
     def __init__(self):
         super(TodoModuleContainer, self).__init__(self.todo_db)
@@ -73,6 +65,7 @@ def new_todo_service():
     # I updated the dependencies as example/dependencies.py
     # let's inject the dependencies
     return TodoServiceContainer.inject(dependencies)
+
 
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)
