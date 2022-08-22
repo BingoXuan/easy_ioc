@@ -10,7 +10,7 @@ pip install easy-ioc
 
 ## &#x20;Example
 
-use without easy\_ioc
+project without easy\_ioc
 
 ```python
 # example/todo_without_ioc.py
@@ -109,7 +109,7 @@ if __name__ == '__main__':
 
 ```
 
-use with easy\_ioc
+refactor project with easy\_ioc
 
 ```python
 # example/todo_with_ioc.py
