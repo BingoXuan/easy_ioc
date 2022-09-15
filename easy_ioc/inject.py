@@ -4,7 +4,7 @@ from easy_ioc.injectable import Injectable
 T = typing.TypeVar('T')
 
 
-def inject(cls: T) -> T:
+def inject(cls: typing.Type[T]) -> T:
     """
     if you're using python3.7 or higher
     inject is typed, it returns a descriptor with your input
