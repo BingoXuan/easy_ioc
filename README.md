@@ -39,7 +39,6 @@ version greater 3 but lower 3.5, you just need to remove typing in **easy_ioc.in
 ### Why all dependencies save as class attributes, all instance share same dependencies?
 the **inject** function create an **Injectable** instance which help you access own dependencies
 correctly. Different instance share same dependencies map, but access own dependencies privately.
-If you want to know more, 
 
 ### Is it easy to be tested?
 It is not just easy to be tested. It makes testing much easier. Think about use case as below
@@ -226,6 +225,8 @@ def new_todo_service():
     # openssl_token_library = TokenLibrary(use_openssl=True)
     # host = "localhost"
     # port = 8080
+    # dictionary of children of container is the keyword arguments of class consturtor
+    # value of container_dependencies is the instance dependencies
     # dependencies = {
     #     "container": {
     #         "TodoServiceContainer": {
