@@ -8,8 +8,6 @@ need_patch_set_name = sys.version_info.major == 3 and sys.version_info.minor == 
 
 class ContainerMeta(type):
     def __new__(mcls, name, bases, namespaces):
-        dependencies = Dependencies()
-        # namespaces['_dependencies'] = dependencies
         cls = super(ContainerMeta, mcls).__new__(mcls, name, bases, namespaces)
         dependencies = Dependencies()
         for base in bases:
